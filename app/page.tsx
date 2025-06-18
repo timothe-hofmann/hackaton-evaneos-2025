@@ -25,6 +25,8 @@ const mockAnswers = [
   }
 ];
 
+const correctAnswerId = 'b'; // Supposons que la bonne réponse est 'b'
+
 const mockQuestion = {
   text: "Which of the following is a fruit?",
   type: "audio",
@@ -35,18 +37,14 @@ export default function Home() {
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [currentQuestion] = useState(1);
   const [totalQuestions] = useState(10);
+  const [validated, setValidated] = useState(false);
 
   const handleClose = () => {
     console.log('Quiz closed');
   };
 
   const handleSkip = () => {
-    console.log('Question skipped');
     setSelectedAnswer('');
-  };
-
-  const handlePlayAudio = () => {
-    console.log('Playing audio');
   };
 
   const handleAnswerChange = (answerId: string) => {
@@ -55,8 +53,7 @@ export default function Home() {
 
   const handleValidate = () => {
     if (selectedAnswer) {
-      console.log('Answer validated:', selectedAnswer);
-      // Here you would typically move to the next question
+      setValidated(true);
     }
   };
 
@@ -91,12 +88,14 @@ export default function Home() {
           answers={mockAnswers}
           selectedAnswer={selectedAnswer}
           onAnswerChange={handleAnswerChange}
+          validated={validated}
+          correctAnswerId={correctAnswerId}
         />
       </Container>
 
       <ValidateButton
         onValidate={handleValidate}
-        disabled={!selectedAnswer}
+        disabled={!selectedAnswer || validated}
       />
     </Box>
   );
