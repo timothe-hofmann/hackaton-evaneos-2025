@@ -25,6 +25,12 @@ const mockAnswers = [
   }
 ];
 
+const mockQuestion = {
+  text: "Which of the following is a fruit?",
+  type: "audio",
+  content: "https://8babe53e-cd1f-4e7e-a7be-583f2a598d3b.mdnplay.dev/shared-assets/audio/t-rex-roar.mp3"
+};
+
 export default function Home() {
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [currentQuestion] = useState(1);
@@ -76,9 +82,9 @@ export default function Home() {
         }}
       >
         <QuestionSection
-          question="Question"
-          hasAudio={true}
-          onPlayAudio={handlePlayAudio}
+          text={mockQuestion.text}
+          type={mockQuestion.type as "audio" | "text"}
+          content={mockQuestion.content}
         />
         
         <AnswerOptions

@@ -1,63 +1,56 @@
-'use client';
-import {
-  Box,
-  Typography,
-  IconButton,
-  Card,
-  CardContent,
-} from '@mui/material';
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+"use client";
+
+import { Box, Typography, Button } from "@mui/material";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import { useEffect } from "react";
 
 interface QuestionSectionProps {
-  question: string;
-  hasAudio?: boolean;
-  onPlayAudio?: () => void;
+  text: string;
+  type: "audio" | "text";
+  content: string;
 }
 
-export default function QuestionSection({ 
-  question, 
-  hasAudio = true, 
-  onPlayAudio 
+export default function QuestionSection({
+  text,
+  type,
+  content,
 }: QuestionSectionProps) {
   return (
     <Box sx={{ px: 2, mb: 3 }}>
-      <Card
-        elevation={0}
-        sx={{
-          backgroundColor: 'secondary.main',
-          color: 'white',
-          borderRadius: 3,
-        }}
-      >
-        <CardContent sx={{ p: 3, '&:last-child': { pb: 3 } }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-              mb: 2,
-            }}
-          >
-            {hasAudio && (
-              <IconButton
-                onClick={onPlayAudio}
-                sx={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                  color: 'white',
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                  },
-                }}
-              >
-                <VolumeUpIcon />
-              </IconButton>
-            )}
-            <Typography variant="h6" component="h2">
-              {question}
-            </Typography>
-          </Box>
-        </CardContent>
-      </Card>
+      <Typography variant="h5" component="h2">
+        {text}
+      </Typography>
+      {type === "audio" && (
+        <Box sx={{ my: 3 }}>
+          <AudioButton content={content} />
+        </Box>
+      )}
     </Box>
+  );
+}
+
+function AudioButton({ content }: { content: string }) {
+  const audio = new Audio(content);
+
+  useEffect(() => {
+    audio.load();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [content]);
+
+  const handlePlayAudio = () => {
+    audio.play();
+  };
+
+  return (
+    <Button
+      fullWidth
+      variant="contained"
+      color="secondary"
+      size="large"
+      onClick={handlePlayAudio}
+    >
+      <VolumeUpIcon />
+      Play sound
+    </Button>
   );
 }
