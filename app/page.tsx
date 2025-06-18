@@ -72,6 +72,7 @@ export default function Home() {
   const handleSkip = () => {
     setSelectedAnswer("");
     setValidated(false);
+    handleNextQuestion();
   };
 
   const handleAnswerChange = (answerId: string) => {
@@ -111,7 +112,11 @@ export default function Home() {
         flexDirection: "column",
       }}
     >
-      <QuizHeader onClose={handleClose} onSkip={handleSkip} />
+      <QuizHeader
+        onClose={handleClose}
+        onSkip={handleSkip}
+        isValidated={validated}
+      />
 
       <ProgressBar
         progress={currentQuestionIndex + 1}
