@@ -1,14 +1,15 @@
 "use client";
 import { useState } from "react";
-import { Container, Box, Button } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import QuizHeader from "./components/QuizHeader";
 import ProgressBar from "./components/ProgressBar";
 import QuestionSection from "./components/QuestionSection";
 import AnswerOptions from "./components/AnswerOptions";
 import ValidateButton from "./components/ValidateButton";
 import EndScreen from "./components/EndScreen";
-import NextButton from "./components/NextButton";
 import StartScreen from "./components/StartScreen";
+import LinaChat from "./components/LinaChat";
+import ExplainButton from "./components/ExplainButton";
 
 // Quiz questions JSON
 const questions = [
@@ -54,6 +55,7 @@ export default function Home() {
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [validated, setValidated] = useState(false);
   const [quizFinished, setQuizFinished] = useState(false);
+  const [linaChatStarted, setLinaChatStarted] = useState(false);
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -85,7 +87,12 @@ export default function Home() {
     setValidated(true);
   };
 
+  const handleExplain = () => {
+    setLinaChatStarted(true);
+  };
+
   const handleNextQuestion = () => {
+    setLinaChatStarted(false);
     if (currentQuestionIndex === questions.length - 1) {
       setQuizFinished(true);
     } else {
@@ -101,6 +108,10 @@ export default function Home() {
 
   if (quizFinished) {
     return <EndScreen />;
+  }
+
+  if (linaChatStarted) {
+    return <LinaChat onNextClicked={handleNextQuestion} />;
   }
 
   return (
@@ -147,7 +158,7 @@ export default function Home() {
       </Container>
 
       {validated ? (
-        <NextButton onNext={handleNextQuestion} />
+        <ExplainButton onExplain={handleExplain} />
       ) : (
         <ValidateButton
           onValidate={handleValidate}

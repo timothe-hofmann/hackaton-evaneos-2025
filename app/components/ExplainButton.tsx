@@ -2,13 +2,13 @@
 
 import { Button, Box } from "@mui/material";
 
-interface NextButtonProps {
-  onNext: () => void;
+interface ExplainButtonProps {
+  onExplain: () => void;
 }
 
-export default function NextButton({ 
-  onNext, 
-}: NextButtonProps) {
+export default function ExplainButton({ 
+  onExplain, 
+}: ExplainButtonProps) {
   return (
     <Box
       sx={{ 
@@ -20,9 +20,9 @@ export default function NextButton({
         variant="contained"
         color="primary"
         size="large"
-        onClick={onNext}
+        onClick={onExplain}
       >
-        Next question
+        Explain response
       </Button>
     </Box>
   );
