@@ -1,102 +1,140 @@
-'use client';
-import { useState } from 'react';
-import { Container, Box } from '@mui/material';
-import QuizHeader from './components/QuizHeader';
-import ProgressBar from './components/ProgressBar';
-import QuestionSection from './components/QuestionSection';
-import AnswerOptions from './components/AnswerOptions';
-import ValidateButton from './components/ValidateButton';
+"use client";
+import { useState } from "react";
+import { Container, Box, Button } from "@mui/material";
+import QuizHeader from "./components/QuizHeader";
+import ProgressBar from "./components/ProgressBar";
+import QuestionSection from "./components/QuestionSection";
+import AnswerOptions from "./components/AnswerOptions";
+import ValidateButton from "./components/ValidateButton";
+import EndScreen from "./components/EndScreen";
+import NextButton from "./components/NextButton";
 
-const mockAnswers = [
+// Quiz questions JSON
+const questions = [
   {
-    id: 'a',
-    label: 'Answer A',
-    text: 'This is the first possible answer option for the question.'
+    text: "Identify this animal sound",
+    type: "audio",
+    content:
+      "https://8babe53e-cd1f-4e7e-a7be-583f2a598d3b.mdnplay.dev/shared-assets/audio/t-rex-roar.mp3",
+    answers: [
+      { id: "a", label: "A", text: "Lion" },
+      { id: "b", label: "B", text: "Elephant" },
+      { id: "c", label: "C", text: "Dog" },
+    ],
+    correctAnswerId: "a",
   },
   {
-    id: 'b',
-    label: 'Answer B',
-    text: 'This is the second possible answer option for the question.'
+    text: "Quelle est la capitale de la France ?",
+    type: "text",
+    content: "",
+    answers: [
+      { id: "a", label: "A", text: "Marseille" },
+      { id: "b", label: "B", text: "Paris" },
+      { id: "c", label: "C", text: "Lyon" },
+    ],
+    correctAnswerId: "b",
   },
   {
-    id: 'c',
-    label: 'Answer C',
-    text: 'This is the third possible answer option for the question.'
-  }
+    text: "Quelle couleur obtient-on en mélangeant du rouge et du bleu ?",
+    type: "text",
+    content: "",
+    answers: [
+      { id: "a", label: "A", text: "Violet" },
+      { id: "b", label: "B", text: "Vert" },
+      { id: "c", label: "C", text: "Orange" },
+    ],
+    correctAnswerId: "a",
+  },
 ];
 
-const correctAnswerId = 'b'; // Supposons que la bonne réponse est 'b'
-
-const mockQuestion = {
-  text: "Which of the following is a fruit?",
-  type: "audio",
-  content: "https://8babe53e-cd1f-4e7e-a7be-583f2a598d3b.mdnplay.dev/shared-assets/audio/t-rex-roar.mp3"
-};
-
 export default function Home() {
-  const [selectedAnswer, setSelectedAnswer] = useState<string>('');
-  const [currentQuestion] = useState(1);
-  const [totalQuestions] = useState(10);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState("");
   const [validated, setValidated] = useState(false);
+  const [quizFinished, setQuizFinished] = useState(false);
+
+  const currentQuestion = questions[currentQuestionIndex];
 
   const handleClose = () => {
-    console.log('Quiz closed');
+    console.log("Quiz closed");
   };
 
   const handleSkip = () => {
-    setSelectedAnswer('');
+    setSelectedAnswer("");
+    setValidated(false);
   };
 
   const handleAnswerChange = (answerId: string) => {
     setSelectedAnswer(answerId);
+    setValidated(false);
   };
 
   const handleValidate = () => {
-    if (selectedAnswer) {
-      setValidated(true);
+    if (!selectedAnswer) return;
+    setValidated(true);
+  };
+
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex === questions.length - 1) {
+      setQuizFinished(true);
+    } else {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedAnswer("");
+      setValidated(false);
     }
   };
+
+  if (quizFinished) {
+    return <EndScreen />;
+  }
 
   return (
     <Box
       sx={{
-        minHeight: '100vh',
-        backgroundColor: 'background.default',
-        display: 'flex',
-        flexDirection: 'column',
+        minHeight: "100vh",
+        backgroundColor: "background.default",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <QuizHeader onClose={handleClose} onSkip={handleSkip} />
-      
-      <ProgressBar progress={currentQuestion} total={totalQuestions} />
-      
-      <Container 
-        maxWidth="sm" 
-        sx={{ 
-          flex: 1, 
-          pb: 10, // Space for fixed button
+
+      <ProgressBar
+        progress={currentQuestionIndex + 1}
+        total={questions.length}
+      />
+
+      <Container
+        maxWidth="sm"
+        sx={{
+          flex: 1,
+          pb: 10,
           px: { xs: 0, sm: 2 },
         }}
       >
         <QuestionSection
-          text={mockQuestion.text}
-          type={mockQuestion.type as "audio" | "text"}
-          content={mockQuestion.content}
+          text={currentQuestion.text}
+          type={currentQuestion.type as "audio" | "text"}
+          content={currentQuestion.content}
         />
-        
+
         <AnswerOptions
-          answers={mockAnswers}
+          answers={currentQuestion.answers}
           selectedAnswer={selectedAnswer}
           onAnswerChange={handleAnswerChange}
           validated={validated}
-          correctAnswerId={correctAnswerId}
+          correctAnswerId={currentQuestion.correctAnswerId}
         />
       </Container>
 
-      <ValidateButton
-        onValidate={handleValidate}
-        disabled={!selectedAnswer || validated}
-      />
+      {validated ? (
+        <NextButton onNext={handleNextQuestion} />
+      ) : (
+        <ValidateButton
+          onValidate={handleValidate}
+          disabled={!selectedAnswer}
+        />
+      )}
     </Box>
   );
 }
