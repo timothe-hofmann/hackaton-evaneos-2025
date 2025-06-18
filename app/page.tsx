@@ -111,7 +111,15 @@ export default function Home() {
   }
 
   if (linaChatStarted) {
-    return <LinaChat onNextClicked={handleNextQuestion} />;
+    return (
+      <LinaChat
+        currentQuestionIndex={currentQuestionIndex}
+        questions={questions}
+        onClose={handleClose}
+        onSkip={handleSkip}
+        onNextClicked={handleNextQuestion}
+      />
+    );
   }
 
   return (
