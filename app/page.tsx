@@ -8,6 +8,7 @@ import AnswerOptions from "./components/AnswerOptions";
 import ValidateButton from "./components/ValidateButton";
 import EndScreen from "./components/EndScreen";
 import NextButton from "./components/NextButton";
+import StartScreen from "./components/StartScreen";
 
 // Quiz questions JSON
 const questions = [
@@ -48,6 +49,7 @@ const questions = [
 ];
 
 export default function Home() {
+  const [quizStarted, setQuizStarted] = useState(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [validated, setValidated] = useState(false);
@@ -56,7 +58,15 @@ export default function Home() {
   const currentQuestion = questions[currentQuestionIndex];
 
   const handleClose = () => {
-    console.log("Quiz closed");
+    setQuizStarted(false);
+  };
+
+  const handleStart = () => {
+    setQuizStarted(true);
+    setCurrentQuestionIndex(0);
+    setSelectedAnswer("");
+    setValidated(false);
+    setQuizFinished(false);
   };
 
   const handleSkip = () => {
@@ -83,6 +93,10 @@ export default function Home() {
       setValidated(false);
     }
   };
+
+  if (!quizStarted) {
+    return <StartScreen onStart={handleStart} />;
+  }
 
   if (quizFinished) {
     return <EndScreen />;
