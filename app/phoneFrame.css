@@ -1,0 +1,19 @@
+.phone-frame {
+  position: relative;
+  width: 375px;
+  height: 700px;
+  margin: 0 auto;
+  background: url("https://raw.githubusercontent.com/hfg-gmuend/openmoji/master/src/objects/phone/1F4F1.svg") no-repeat center/contain;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone-screen {
+  position: absolute;
+  top: 12%;
+  left: 11%;
+  width: 78%;
+  height: 76%;
+  overflow-y: auto;
+}

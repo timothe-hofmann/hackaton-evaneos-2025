@@ -1,4 +1,5 @@
 import ThemeProvider from './providers/ThemeProvider';
+import PhoneFrame from './PhoneFrame';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -15,7 +16,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ThemeProvider>
-          {children}
+          <PhoneFrame>
+            {children}
+          </PhoneFrame>
         </ThemeProvider>
       </body>
     </html>
