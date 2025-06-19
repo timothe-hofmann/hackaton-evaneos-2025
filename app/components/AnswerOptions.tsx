@@ -39,16 +39,19 @@ export default function AnswerOptions({
           {answers.map((answer) => {
             let borderColor = '1px solid rgba(0, 0, 0, 0.12)';
             let backgroundColor = 'transparent';
+            let isDisabled = false;
             
             if (validated) {
               if (answer.id === correctAnswerId) {
-                // Réponse correcte - toujours verte
                 borderColor = '2px solid #4caf50';
                 backgroundColor = 'rgba(76, 175, 80, 0.08)';
-              } else {
-                // Réponse incorrecte - toujours rouge
+              } else if (answer.id === selectedAnswer) {
                 borderColor = '2px solid #f44336';
                 backgroundColor = 'rgba(244, 67, 54, 0.08)';
+              } else {
+                borderColor = '1px solid rgba(0, 0, 0, 0.12)';
+                backgroundColor = 'transparent';
+                isDisabled = true;
               }
             } else if (selectedAnswer === answer.id) {
               borderColor = '2px solid #2196F3';
@@ -59,6 +62,7 @@ export default function AnswerOptions({
               <FormControlLabel
                 key={answer.id}
                 value={answer.id}
+                disabled={isDisabled}
                 control={
                   <Radio
                     sx={{
@@ -75,14 +79,14 @@ export default function AnswerOptions({
                     <Typography
                       variant="body1"
                       component="span"
-                      sx={{ fontWeight: 500, mr: 1 }}
+                      sx={{ fontWeight: 500, mr: 1, color: isDisabled ? 'text.secondary' : 'text.primary' }}
                     >
                       {answer.label}
                     </Typography>
                     <Typography
                       variant="body1"
                       component="span"
-                      sx={{ color: 'text.primary' }}
+                      sx={{ color: isDisabled ? 'text.secondary' : 'text.primary' }}
                     >
                       {answer.text}
                     </Typography>

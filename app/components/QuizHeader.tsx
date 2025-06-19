@@ -11,9 +11,10 @@ import CloseIcon from '@mui/icons-material/Close';
 interface QuizHeaderProps {
   onClose?: () => void;
   onSkip?: () => void;
+  isValidated?: boolean;
 }
 
-export default function QuizHeader({ onClose, onSkip }: QuizHeaderProps) {
+export default function QuizHeader({ onClose, onSkip, isValidated }: QuizHeaderProps) {
   return (
     <AppBar 
       position="static" 
@@ -37,7 +38,8 @@ export default function QuizHeader({ onClose, onSkip }: QuizHeaderProps) {
           <CloseIcon />
         </IconButton>
         
-        <Typography
+        {!isValidated && (
+          <Typography
           variant="body1"
           sx={{ 
             color: 'primary.main',
@@ -45,9 +47,10 @@ export default function QuizHeader({ onClose, onSkip }: QuizHeaderProps) {
             cursor: 'pointer',
           }}
           onClick={onSkip}
-        >
-          Skip
-        </Typography>
+          >
+            Skip
+          </Typography>
+        )}
       </Toolbar>
     </AppBar>
   );
