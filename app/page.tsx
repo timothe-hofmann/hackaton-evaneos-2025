@@ -104,22 +104,32 @@ export default function Home() {
   };
 
   if (!quizStarted) {
-    return <StartScreen onStart={handleStart} />;
+    return (
+      <PhoneFrame>
+        <StartScreen onStart={handleStart} />
+      </PhoneFrame>
+    );
   }
 
   if (quizFinished) {
-    return <EndScreen />;
+    return (
+      <PhoneFrame>
+        <EndScreen />
+      </PhoneFrame>
+    );
   }
 
   if (linaChatStarted) {
     return (
-      <LinaChat
-        currentQuestionIndex={currentQuestionIndex}
-        questions={questions}
-        onClose={handleClose}
-        onSkip={handleSkip}
-        onNextClicked={handleNextQuestion}
-      />
+      <PhoneFrame>
+        <LinaChat
+          currentQuestionIndex={currentQuestionIndex}
+          questions={questions}
+          onClose={handleClose}
+          onSkip={handleSkip}
+          onNextClicked={handleNextQuestion}
+        />
+      </PhoneFrame>
     );
   }
 
