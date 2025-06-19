@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Container, Box } from "@mui/material";
+import PhoneFrame from "./components/PhoneFrame";
 import QuizHeader from "./components/QuizHeader";
 import ProgressBar from "./components/ProgressBar";
 import QuestionSection from "./components/QuestionSection";
@@ -123,56 +124,58 @@ export default function Home() {
   }
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        backgroundColor: "background.default",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <QuizHeader
-        onClose={handleClose}
-        onSkip={handleSkip}
-        isValidated={validated}
-      />
-
-      <ProgressBar
-        progress={currentQuestionIndex + 1}
-        total={questions.length}
-      />
-
-      <Container
-        maxWidth="sm"
+    <PhoneFrame>
+      <Box
         sx={{
-          flex: 1,
-          pb: 10,
-          px: { xs: 0, sm: 2 },
+          minHeight: "100vh",
+          backgroundColor: "background.default",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        <QuestionSection
-          text={currentQuestion.text}
-          type={currentQuestion.type as "audio" | "text"}
-          content={currentQuestion.content}
+        <QuizHeader
+          onClose={handleClose}
+          onSkip={handleSkip}
+          isValidated={validated}
         />
 
-        <AnswerOptions
-          answers={currentQuestion.answers}
-          selectedAnswer={selectedAnswer}
-          onAnswerChange={handleAnswerChange}
-          validated={validated}
-          correctAnswerId={currentQuestion.correctAnswerId}
+        <ProgressBar
+          progress={currentQuestionIndex + 1}
+          total={questions.length}
         />
-      </Container>
 
-      {validated ? (
-        <ExplainButton onExplain={handleExplain} />
-      ) : (
-        <ValidateButton
-          onValidate={handleValidate}
-          disabled={!selectedAnswer}
-        />
-      )}
-    </Box>
+        <Container
+          maxWidth="sm"
+          sx={{
+            flex: 1,
+            pb: 10,
+            px: { xs: 0, sm: 2 },
+          }}
+        >
+          <QuestionSection
+            text={currentQuestion.text}
+            type={currentQuestion.type as "audio" | "text"}
+            content={currentQuestion.content}
+          />
+
+          <AnswerOptions
+            answers={currentQuestion.answers}
+            selectedAnswer={selectedAnswer}
+            onAnswerChange={handleAnswerChange}
+            validated={validated}
+            correctAnswerId={currentQuestion.correctAnswerId}
+          />
+        </Container>
+
+        {validated ? (
+          <ExplainButton onExplain={handleExplain} />
+        ) : (
+          <ValidateButton
+            onValidate={handleValidate}
+            disabled={!selectedAnswer}
+          />
+        )}
+      </Box>
+    </PhoneFrame>
   );
 }
